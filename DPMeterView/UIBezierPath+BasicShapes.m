@@ -81,6 +81,73 @@
 }
 
 
++ (NSDictionary *)prepareListShape:(CGRect)originalFrame {
+    CGFloat x = 5;
+    CGFloat radiusOfCircle = (18.0/100.0 * originalFrame.size.height)/2;
+    CGPoint firstCircleCenter = CGPointMake(originalFrame.size.width/2, x + radiusOfCircle);
+    CGFloat lineHeight = (8.0/100.0 * originalFrame.size.height);
+    CGFloat lineWidth = 3;
+    
+    UIBezierPath *bezierPath = [UIBezierPath bezierPath];
+    [bezierPath addArcWithCenter:firstCircleCenter radius:radiusOfCircle startAngle:0 endAngle:2 * M_PI clockwise:YES];
+    
+    UIBezierPath *clipPath = [UIBezierPath bezierPath];
+    [clipPath addArcWithCenter:firstCircleCenter radius:(radiusOfCircle - 4) startAngle:0 endAngle:2 * M_PI clockwise:YES];
+    
+    clipPath.usesEvenOddFillRule = YES;
+    
+    [bezierPath appendPath:[clipPath bezierPathByReversingPath]];
+    
+    UIBezierPath *line = [UIBezierPath bezierPathWithRect:CGRectMake(firstCircleCenter.x - (lineWidth/2), firstCircleCenter.y + (radiusOfCircle-1), lineWidth, lineHeight)];
+    [bezierPath appendPath:line];
+    
+    UIBezierPath *secondCircle = [UIBezierPath bezierPath];
+    CGPoint secondCirclePoint = firstCircleCenter;
+    secondCirclePoint.y += radiusOfCircle + lineHeight + radiusOfCircle - 2;
+    [bezierPath addArcWithCenter:secondCirclePoint radius:radiusOfCircle startAngle:0 endAngle:2 * M_PI clockwise:YES];
+    
+    UIBezierPath *clipsecondCirclePath = [UIBezierPath bezierPath];
+    [clipsecondCirclePath addArcWithCenter:secondCirclePoint radius:(radiusOfCircle - 4) startAngle:0 endAngle:2 * M_PI clockwise:YES];
+    clipsecondCirclePath.usesEvenOddFillRule = YES;
+    
+    [secondCircle appendPath:[clipsecondCirclePath bezierPathByReversingPath]];
+    
+    
+    [bezierPath appendPath:secondCircle];
+    
+    
+    UIBezierPath *line2 = [UIBezierPath bezierPathWithRect:CGRectMake(firstCircleCenter.x - (lineWidth/2), secondCirclePoint.y + (radiusOfCircle-1), lineWidth, lineHeight)];
+    [bezierPath appendPath:line2];
+    
+    UIBezierPath *thirdCircle = [UIBezierPath bezierPath];
+    CGPoint thirdCirclePoint = secondCirclePoint;
+    thirdCirclePoint.y += radiusOfCircle + lineHeight + radiusOfCircle - 2;
+    [bezierPath addArcWithCenter:thirdCirclePoint radius:radiusOfCircle startAngle:0 endAngle:2 * M_PI clockwise:YES];
+    
+    UIBezierPath *clipThirdCirclePath = [UIBezierPath bezierPath];
+    [clipThirdCirclePath addArcWithCenter:thirdCirclePoint radius:(radiusOfCircle - 4) startAngle:0 endAngle:2 * M_PI clockwise:YES];
+    clipThirdCirclePath.usesEvenOddFillRule = YES;
+    
+    [thirdCircle appendPath:[clipThirdCirclePath bezierPathByReversingPath]];
+    
+    
+    [bezierPath appendPath:thirdCircle];
+    
+    
+    UIBezierPath *line3 = [UIBezierPath bezierPathWithRect:CGRectMake(firstCircleCenter.x - (lineWidth/2), thirdCirclePoint.y + (radiusOfCircle-1), lineWidth, lineHeight)];
+    [bezierPath appendPath:line3];
+    
+    UIBezierPath *roundedRect = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, line3.bounds.origin.y + lineHeight, originalFrame.size.width, (0.12 * originalFrame.size.height)) cornerRadius:20];
+    UIBezierPath *roundedRectInside = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0 + 4, line3.bounds.origin.y + lineHeight + 4, originalFrame.size.width - 8, (0.12 * originalFrame.size.height - 8)) cornerRadius:20];
+    
+    [roundedRect appendPath:[roundedRectInside bezierPathByReversingPath]];
+    
+    [bezierPath appendPath:roundedRect];
+    
+    return @{@"path" : bezierPath, @"circleCenter1X" : @(firstCircleCenter.x), @"circleCenter1Y": @(firstCircleCenter.y), @"circleCenter2X" : @(secondCirclePoint.x), @"circleCenter2Y": @(secondCirclePoint.y), @"circleCenter3X" : @(thirdCirclePoint.x), @"circleCenter3Y": @(thirdCirclePoint.y), @"roundRectX" : @(roundedRectInside.bounds.origin.x), @"roundRectY": @(roundedRectInside.bounds.origin.y)};
+}
+
+
 + (UIBezierPath *)martiniShape:(CGRect)originalFrame
 {
     CGRect frame = [self maximumSquareFrameThatFits:originalFrame];

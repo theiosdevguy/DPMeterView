@@ -16,5 +16,6 @@
 + (UIBezierPath *)beakerShape:(CGRect)originalFrame;
 + (UIBezierPath *)starShape:(CGRect)originalFrame;
 + (UIBezierPath *)stars:(NSUInteger)numberOfStars shapeInFrame:(CGRect)originalFrame;
++ (NSDictionary *)prepareListShape:(CGRect)originalFrame;
 
 @end

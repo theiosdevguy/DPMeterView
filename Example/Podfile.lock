@@ -1,5 +1,5 @@
 PODS:
-  - DPMeterView (1.0.1)
+  - DPMeterView (1.1.0)
   - Kiwi (2.3.1)
 
 DEPENDENCIES:
@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: ../.
 
 SPEC CHECKSUMS:
-  DPMeterView: f6a917eaec2b2ef7844cb43f2ce2c6ac4b4abc85
+  DPMeterView: 6cf3368f655e722856d3f394d805363821858ca7
   Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
 
 COCOAPODS: 0.39.0
